@@ -17,11 +17,11 @@ let jugador = {
 
 
 let jugadors = [{
-        posicio: "0",
+        posicio: 0,
         alies: "dummy",
         nombre: "test",
         apellidos: "test",
-        score: "0"
+        score: 0
 }];
 
 
@@ -44,13 +44,13 @@ let respuesta = {
     
     
     //El post le pido los tres apartados de jugador
-   app.post('/jugadors', function (req, res) {
+   app.post('/jugadors/:alias', function (req, res) {
        
-    if(!req.body.nombre || !req.body.apellidos || !req.body.score) { //Si uno de los tres es nulo da error
+    if(!req.body.nombre || !req.body.apellidos || !req.body.score || !req.params.alias) { //Si uno de los tres es nulo da error
         respuesta = {
         error: true,
         codigo: 502,
-        mensaje: 'Necesitas incluir un nombre, apellido y score para el jugador'
+        mensaje: 'Necesitas incluir un nombre, apellido, score para el jugador y alias'
         };
     } 
     else {
@@ -66,10 +66,10 @@ let respuesta = {
            
             
                 jugadors[jugadors.length] = {
-                    posicio: jugadors.length,
+                    posicio: jugadors.length +1,
                     nombre: req.body.nombre,
                     apellidos: req.body.apellidos,
-                    alies: req.body.alies,
+                    alies: req.params.alias,
                     score: req.body.score
                     };
                 
@@ -84,53 +84,84 @@ let respuesta = {
                 respuesta: jugadors[jugadors.length - 1]
                 };
             }
+
+            jugadors.sort((a,b)  => (a.score < b.score ? 1 : -1));
+            for(i = 0; i < jugadors.length; i++){
+                jugadors[i].posicio = i+1;
+    
+            }
+
+            var last = jugadors[jugadors.length - 1];
+            if (last.nombre == "test"){
+
+            jugadors.splice(-1,1);
+            }
     }    
     res.send(respuesta);
-   });
+});
 
 
 
-    app.get('/ranking', function (req, res) {
-    
-        jugadors.sort((a,b)  => (a.score < b.score ? 1 : -1));
+app.put('/jugadors/:alies', function(req, res){  
+if(!req.body.nombre || !req.body.apellidos || !req.body.score || !req.params.alias) { //Si uno de los tres es nulo da error   
+    respuesta = {
+        error: false,
+        codigo: 502,
+        mensaje: 'Faltan campos en el put',
+    }; 
+}
+else{
+    x = 0;
+    jugadornum = 0;
+    for(i = 0; i < jugadors.length; i++){
+        if(req.params.alias != jugadors[i].alies) {
+            x++;
+        } 
+        else{
+            jugadornum = i;
+        }
+    }
+    if (x == jugadors.length){
+        respuesta = {
+            error: false,
+            codigo: 504,
+            mensaje: 'jugador no existe',
+            };
+    }
+    else {
+        jugadors [jugadornum] = {
+            nombre: req.body.nombre,
+            apellidos: req.body.apellidos,
+            alies: req.params.alias,
+            score: req.body.score
+            };
+        }
+    }
+
+    jugadors.sort((a,b)  => (a.score < b.score ? 1 : -1));
         for(i = 0; i < jugadors.length; i++){
             jugadors[i].posicio = i+1;
 
         }
+});
 
-        var last = jugadors[jugadors.length - 1];
-        if (last.nombre == "test"){
-
-            jugadors.splice(-1,1);
-
-        }
-        
-   
-
+    app.get('/ranking', function (req, res) {
     res.send(jugadors);
     });
 
-    app.get('/ranking/:alias' + jugadors.alies, function (req, res) {
-    
-        jugadors.sort((a,b)  => (a.score < b.score ? 1 : -1));
+    app.get('/ranking/:alias', function (req, res) {
+      
         for(i = 0; i < jugadors.length; i++){
             
-            if (req.params.alias = jugadors[i].alies){
+            if (req.params.alias == jugadors[i].alies){
 
-                jugador = jugadors[i];
+                 
+                res.send(jugadors[i]);
 
             }
-
-
-            jugadors[i].posicio = i+1;
             
         }
-
-         
-        
-   
-
-    res.send(jugador);
+    
     });
 
 app.listen(3000, () => {
