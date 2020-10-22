@@ -10,8 +10,9 @@ app.use(bodyParser.json());
 let jugador = {
     nombre:'',
     apellidos:'',
-    score:''
-
+    score:'',
+    posicio:'',
+    alies:''
 };
 
 
@@ -96,8 +97,9 @@ let respuesta = {
             jugadors[i].posicio = i+1;
 
         }
+
         var last = jugadors[jugadors.length - 1];
-        if (last.score == 0){
+        if (last.nombre == "test"){
 
             jugadors.splice(-1,1);
 
@@ -106,6 +108,29 @@ let respuesta = {
    
 
     res.send(jugadors);
+    });
+
+    app.get('/ranking/:alias' + jugadors.alies, function (req, res) {
+    
+        jugadors.sort((a,b)  => (a.score < b.score ? 1 : -1));
+        for(i = 0; i < jugadors.length; i++){
+            
+            if (req.params.alias = jugadors[i].alies){
+
+                jugador = jugadors[i];
+
+            }
+
+
+            jugadors[i].posicio = i+1;
+            
+        }
+
+         
+        
+   
+
+    res.send(jugador);
     });
 
 app.listen(3000, () => {
