@@ -11,6 +11,6 @@ api.setup(app);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.PORT || 3000;
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log("El servidor está inicializado en el puerto 3000");
 });
