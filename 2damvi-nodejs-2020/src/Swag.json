@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "Simple Inventory API",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "check Server",
+        "description": "Pagina inicial\n",
+        "parameters": [],
+        "responses": {
+          "100": {
+            "description": "Funciona"
+          }
+        }
+      }
+    },
+    "/ranking": {
+      "get": {
+        "summary": "Muestra Players",
+        "description": "Enseña todos los players\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Players"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/players/{alias}": {
+      "get": {
+        "summary": "Muestra Player",
+        "description": "Enseña un player\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "pasa el alias del player a buscar",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "$ref": "#/definitions/Players"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Añade un jugador nuevo",
+        "description": "Adds an item to the players",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "pasa el alias del player a buscar",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Player",
+            "description": "Inventory item to add",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Player"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "item created",
+            "schema": {
+              "$ref": "#/definitions/Player"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Añade un jugador nuevo",
+        "description": "Adds an item to the players",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "pasa el alias del player a buscar",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Player",
+            "description": "Inventory item to add",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Player"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "item created",
+            "schema": {
+              "$ref": "#/definitions/Player"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Player": {
+      "type": "object",
+      "required": [
+        "name",
+        "score",
+        "surname"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jordi"
+        },
+        "surname": {
+          "type": "string",
+          "example": "Sellares"
+        },
+        "score": {
+          "type": "integer",
+          "example": 100
+        }
+      }
+    },
+    "Players": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Player"
+      }
+    }
+  }
+}

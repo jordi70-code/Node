@@ -1,15 +1,19 @@
+module.exports.setup = function(app){
+/*
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express()
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+module.exports = app;
+*/
+
 
 let code100 = { code: 100, error: false, message: '2-DAMVI Server Up' };
 let code200 = { code: 200, error: false, message: 'Player Exists' };
 let code201 = { code: 201, error: false, message: 'Player Correctly Created' };
-let code202 = { code: 201, error: false, message: 'Player Correctly Updated' };
-let codeError502 = { code: 503, error: true, message: 'The field: name, surname, score are mandatories (the score value has to be >0)' };
+let code202 = { code: 202, error: false, message: 'Player Correctly Updated' };
+let codeError502 = { code: 502, error: true, message: 'The field: name, surname, score are mandatories (the score value has to be >0)' };
 let codeError503 = { code: 503, error: true, message: 'Error: Player Exists' };
 let codeError504 = { code: 504, error: true, message: 'Error: Player not found' };
 
@@ -46,7 +50,7 @@ app.get('/players/:alias', function (req, res) {
     if (index >= 0) {
         //Player exists
         response = code200;
-        response.jugador = players[index];
+        response.player = players[index];
     } else {
         //Player doesn't exists
         response = codeError504;
@@ -120,7 +124,7 @@ app.put('/players/:alias', function (req, res) {
             index = players.findIndex(j => j.alias === paramalias);
             //Response return
             response = code202;
-            response.jugador = players[index];
+            response.player = players[index];
         } else {
             response = codeError504;
         }
@@ -128,6 +132,7 @@ app.put('/players/:alias', function (req, res) {
     res.send(response);
 });
 
-app.listen(3000, () => {
-    console.log("El servidor está inicializado en el puerto 3000");
-});
+
+
+
+}
