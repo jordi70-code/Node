@@ -12,19 +12,12 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "tags": [
-    {
-      "name": "admins",
-      "description": "Secured Admin-only calls"
-    },
-    {
-      "name": "developers",
-      "description": "Operations available to regular developers"
-    }
-  ],
   "paths": {
     "/": {
       "get": {
+        "tags": [
+          "Pagina principal"
+        ],
         "summary": "check Server",
         "description": "Pagina inicial\n",
         "parameters": [],
@@ -37,6 +30,9 @@
     },
     "/ranking": {
       "get": {
+        "tags": [
+          "Show Leaderboard"
+        ],
         "summary": "Muestra Players",
         "description": "Enseña todos los players\n",
         "produces": [
@@ -61,6 +57,9 @@
     },
     "/players/{alias}": {
       "get": {
+        "tags": [
+          "get Player"
+        ],
         "summary": "Muestra Player",
         "description": "Enseña un player\n",
         "produces": [
@@ -85,6 +84,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Register a player"
+        ],
         "summary": "Añade un jugador nuevo",
         "description": "Adds an item to the players",
         "produces": [
@@ -118,6 +120,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Update Player"
+        ],
         "summary": "Añade un jugador nuevo",
         "description": "Adds an item to the players",
         "produces": [
